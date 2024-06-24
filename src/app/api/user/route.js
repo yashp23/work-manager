@@ -1,7 +1,7 @@
+import bcrypt from 'bcrypt';
 import { connectDb } from "@/helper/db";
 import { User } from "@/models/schema";
 import { NextResponse } from "next/server";
-
 
 connectDb();
 
@@ -18,13 +18,18 @@ export async function GET(request) {
         })
     }
 }
+
 export async function POST(request) {
     const { name, email, password, about, profileURL } = await request.json();
 
-    const user = User({ name, email, password, about, profileURL })
+    const user = new User({ name, email, password, about, profileURL })
+
     try {
+
+        user.password = bcrypt.hashSync(user.password, 10);
+
         const createUser = await user.save()
-        console.log(createUser)
+        console.log(user)
 
         return NextResponse.json(user, { status: 201 })
 
@@ -35,10 +40,4 @@ export async function POST(request) {
             status: false
         })
     }
-}
-export function PUT() {
-
-}
-export function DELETE() {
-
 }

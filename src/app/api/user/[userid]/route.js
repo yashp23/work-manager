@@ -2,10 +2,10 @@ import { User } from "@/models/schema";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request, { params }) {
-    const { userid } = params;
+    const { userId } = params;
     try {
         const deleteUser = await User.deleteOne({
-            _id: userid
+            _id: userId
         })
         console.log(deleteUser);
         return NextResponse.json({ msg: "user delete successfully", success: true })
@@ -20,9 +20,9 @@ export async function DELETE(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-    const { userid } = params;
+    const { userId } = params;
     try {
-        const users1 = await User.findById(userid)
+        const users1 = await User.findById(userId)
         console.log(users1);
         return NextResponse.json(users1);
     } catch (error) {
@@ -34,10 +34,10 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-    const { userid } = params;
+    const { userId } = params;
     const { name, password, about, profileURL } = await request.json();
     try {
-        const UpdateUser = await User.findById(userid);
+        const UpdateUser = await User.findById(userId);
         UpdateUser.name = name;
         UpdateUser.password = password;
         UpdateUser.about = about;
